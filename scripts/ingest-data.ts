@@ -5,6 +5,7 @@ import { pinecone } from '@/utils/pinecone-client';
 import { CustomPDFLoader } from '@/utils/customPDFLoader';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
+import path from 'node:path';
 
 /* Name of directory to retrieve your files from */
 const filePath = 'docs';
@@ -13,11 +14,16 @@ export const run = async () => {
   try {
     /*load raw docs from the all files in the directory */
     const directoryLoader = new DirectoryLoader(filePath, {
-      '.pdf': (path) => new CustomPDFLoader(path),
+      '.pdf': (filePath) => new CustomPDFLoader(filePath),
     });
 
     // const loader = new PDFLoader(filePath);
     const rawDocs = await directoryLoader.load();
+    //打印要读取的文档名称
+    // rawDocs.forEach((doc) => {
+    //   const fileName = path.basename(doc.metadata.source);
+    //   console.log(`Loaded PDF document: ${fileName}`);
+    // });
 
     /* Split text into chunks */
     const textSplitter = new RecursiveCharacterTextSplitter({
