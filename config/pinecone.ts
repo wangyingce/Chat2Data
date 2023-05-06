@@ -1,3 +1,17 @@
+import { CustomPDFLoader } from '@/utils/customPDFLoader';
+import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
+import path from 'node:path';
+
+const directoryLoader = new DirectoryLoader('docs', {
+  '.pdf': (filePath) => new CustomPDFLoader(filePath),
+});
+const rawDocs = await directoryLoader.load();
+rawDocs.forEach((doc) => {
+  const fileName = path.basename(doc.metadata.source);
+  process.env.PINECONE_NAME_SPACE = path.basename(doc.metadata.source);
+  // console.log(`Loaded process.env.PINECONE_NAME_SPACE: ${process.env.PINECONE_NAME_SPACE}`);
+});
+
 /**
  * Change the namespace to the namespace on Pinecone you'd like to store your embeddings.
  */

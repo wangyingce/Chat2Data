@@ -5,7 +5,7 @@ import { pinecone } from '@/utils/pinecone-client';
 import { CustomPDFLoader } from '@/utils/customPDFLoader';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
-import path from 'node:path';
+// import path from 'node:path';
 
 /* Name of directory to retrieve your files from */
 const filePath = 'docs';
@@ -22,7 +22,8 @@ export const run = async () => {
     //打印要读取的文档名称
     // rawDocs.forEach((doc) => {
     //   const fileName = path.basename(doc.metadata.source);
-    //   console.log(`Loaded PDF document: ${fileName}`);
+    //   process.env.PINECONE_NAME_SPACE = fileName;
+      // console.log(`PINECONE_NAME_SPACE:`,PINECONE_NAME_SPACE);
     // });
 
     /* Split text into chunks */
@@ -32,7 +33,7 @@ export const run = async () => {
     });
 
     const docs = await textSplitter.splitDocuments(rawDocs);
-    console.log('split docs', docs);
+    // console.log('split docs', docs);
 
     console.log('creating vector store...');
     /*create and store the embeddings in the vectorStore*/

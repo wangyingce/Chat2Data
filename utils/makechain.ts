@@ -1,15 +1,17 @@
 import { OpenAI } from 'langchain/llms/openai';
 import { PineconeStore } from 'langchain/vectorstores/pinecone';
 import { ConversationalRetrievalQAChain } from 'langchain/chains';
+import { PINECONE_NAME_SPACE } from '@/config/pinecone';
+
 // 通用品种
-const CONDENSE_PROMPT = `As an AI assistant,combine `+process.env.PINECONE_NAME_SPACE+` given the following conversation and a follow up question, rephrase the follow up question to be a standalone question with chinese.
+const CONDENSE_PROMPT = `As an AI assistant,combine `+PINECONE_NAME_SPACE+` given the following conversation and a follow up question, rephrase the follow up question to be a standalone question with chinese.
 
 Chat History:
 {chat_history}
 Follow Up Input: {question}
 Standalone question:`;
 
-const QA_PROMPT = `As an AI assistant. combine `+process.env.PINECONE_NAME_SPACE+` and use the following context to answer the final question.
+const QA_PROMPT = `As an AI assistant. combine `+PINECONE_NAME_SPACE+` and use the following context to answer the final question.
 If you don't know the answer, say you don't know. Do not try to make up an answer.
 If the question is not relevant to the context, answer politely and you are tuned to answer only questions that are relevant to the context and try to choose something that is relevant to insurance.
 
