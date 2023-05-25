@@ -5,6 +5,9 @@ import { pinecone } from '@/utils/pinecone-client';
 import { CustomPDFLoader } from '@/utils/customPDFLoader';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
+import { Flwts } from '@/utils/flwt';
+import { insertNamespace } from '@/utils/mysql-client';
+
 // import path from 'node:path';
 
 /* Name of directory to retrieve your files from */
@@ -53,6 +56,13 @@ export const run = async () => {
 };
 
 (async () => {
-  await run();
-  console.log('ingestion complete');
+  try {
+    await run();
+    // await insertNamespace();
+    Flwts.writeToFile(PINECONE_NAME_SPACE);
+    console.log('ingestion complete');
+  }catch (error) {
+    console.log('error', error);
+    throw new Error('Failed to ingest your data');
+  }
 })();

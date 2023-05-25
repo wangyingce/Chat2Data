@@ -11,24 +11,6 @@ Chat History:
 Follow Up Input: {question}
 Standalone question:`;
 
-//创意max：无角色并且不围绕文档主题，上下文做参照，其余自行发挥 
-// const QA_PROMPT = `Following context to answer the final question.
-
-// Question: {question}
-
-// Helpful answer in markdown with Chinese:`;
-
-//创意：角色+围绕文档主题和上下文回答问题，但不允许创造
-// const QA_PROMPT = `As an AI assistant. combine `+PINECONE_NAME_SPACE+` and use the following context to answer the final question.
-// If you don't know the answer, say you don't know. Do not try to make up an answer.
-
-// {context}
-
-// Question: {question}
-
-// Helpful answer in markdown with Chinese:`;
-
-// 标准：角色+围绕文档主题+保险领域，只回答和文档中或和文档有关联的的问题
 const QA_PROMPT = `As an AI assistant. combine `+PINECONE_NAME_SPACE+` and use the following context to answer the final question.
 If you don't know the answer, say you don't know. Do not try to make up an answer.
 If the question is not relevant to the context, answer politely and you are tuned to answer only questions that are relevant to the context and try to choose something that is relevant to insurance.
@@ -38,7 +20,6 @@ If the question is not relevant to the context, answer politely and you are tune
 Question: {question}
 
 Helpful answer in markdown with Chinese:`;
-
 
 console.log('CONDENSE_PROMPT:',CONDENSE_PROMPT);
 console.log('QA_PROMPT:',QA_PROMPT);

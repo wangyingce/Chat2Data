@@ -12,7 +12,7 @@ export default async function handler(
   const { question, history } = req.body;
 
   console.log('question', question);
-
+  // process.env.PINECONE_NAME_SPACE = '';
   //only accept post requests
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -34,7 +34,7 @@ export default async function handler(
       {
         pineconeIndex: index,
         textKey: 'text',
-        namespace: PINECONE_NAME_SPACE, //namespace comes from your config folder
+        namespace: process.env.PINECONE_NAME_SPACE, //namespace comes from your config folder
       },
     );
 

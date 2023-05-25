@@ -5,7 +5,15 @@
   align-items: center;
   padding: 1rem;
 }
-
+.star {
+  color: red;
+}
+.select {
+  text-align-last:center;
+  text-align:center;
+  -moz-text-align-last:center;
+  color: red;
+}
 .header {
   width: auto;
 }

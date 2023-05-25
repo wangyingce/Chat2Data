@@ -6,8 +6,7 @@ import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import LoadingDots from '@/components/ui/LoadingDots';
 import { Document } from 'langchain/document';
-import { Flwts } from '@/utils/flwt';
-
+import { queryNamespace } from '@/utils/mysql-client';
 import {
   Accordion,
   AccordionContent,
@@ -15,19 +14,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-export async function getServerSideProps() {
-  const fileContent = await Flwts.readFileContent();
-  // fileContent 会作为属性传递给 Home 组件
-  return {
-    props: {
-      fileContent,
-    },
-  };
-}
-export default function Home({fileContent= []}) {
-  const [items, setItems] = useState<string[]>(fileContent);
-  const [selectValue, setSelectValue] = useState<string>('');
-
+export default function Home({ namespaces = [] }) {
   const [query, setQuery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +26,7 @@ export default function Home({fileContent= []}) {
   }>({
     messages: [
       {
-        message: '嘿，选一个主题让我们开始讨论吧?',
+        message: '你好, 你想了解些什么呢?',
         type: 'apiMessage',
       },
     ],
@@ -63,11 +50,6 @@ export default function Home({fileContent= []}) {
 
     if (!query) {
       alert('Please input a question');
-      return;
-    }
-
-    if (!selectValue) { // 添加条件判断，检查选项值是否为空
-      alert('请选择一个主题');
       return;
     }
 
@@ -139,24 +121,6 @@ export default function Home({fileContent= []}) {
     }
   };
 
-  const handleSelectChange = async (event:React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    // 调用你的函数，并将所选的值作为参数传递
-    console.log('selectedValue:'+selectedValue);
-    setSelectValue(selectedValue);
-    const response = await fetch('/api/updatens', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ selectedValue }),
-    });
-  
-    const data = await response.json();
-    console.log(data.message);  // 打印服务器端返回的消息
-    // alert('修改成功');
-  }
-
   return (
     <>
       <Layout>
@@ -164,18 +128,6 @@ export default function Home({fileContent= []}) {
           <h1 className="text-2xl font-bold leading-[1.1] tracking-tighter text-center">
           God in his heaven. All‘s right with the world.
           </h1>
-          <div className={styles.select}>
-          {/* *The current topic of the chat is: */}
-          *当前讨论的主题是:
-          <select onChange={handleSelectChange} required>
-          <option value="">请选择一个主题</option>
-            {items.map((item, index) => (
-              <option key={index} value={item}>
-              {item}
-              </option>
-            ))}
-          </select>
-          </div>
           <main className={styles.main}>
             <div className={styles.cloud}>
               <div ref={messageListRef} className={styles.messagelist}>
@@ -223,6 +175,36 @@ export default function Home({fileContent= []}) {
                           </ReactMarkdown>
                         </div>
                       </div>
+                      {/* {message.sourceDocs && (
+                        <div
+                          className="p-5"
+                          key={`sourceDocsAccordion-${index}`}
+                        >
+                          <Accordion
+                            type="single"
+                            collapsible
+                            className="flex-col"
+                          >
+                            {message.sourceDocs.map((doc, index) => (
+                              <div key={`messageSourceDocs-${index}`}>
+                                <AccordionItem value={`item-${index}`}>
+                                  <AccordionTrigger>
+                                    <h3>Source {index + 1}</h3>
+                                  </AccordionTrigger>
+                                  <AccordionContent>
+                                    <ReactMarkdown linkTarget="_blank">
+                                      {doc.pageContent}
+                                    </ReactMarkdown>
+                                    <p className="mt-2">
+                                      <b>Source:</b> {doc.metadata.source}
+                                    </p>
+                                  </AccordionContent>
+                                </AccordionItem>
+                              </div>
+                            ))}
+                          </Accordion>
+                        </div>
+                      )} */}
                     </>
                   );
                 })}
@@ -279,10 +261,24 @@ export default function Home({fileContent= []}) {
             )}
           </main>
         </div>
+        <select>
+          {namespaces && namespaces.map(({ns}, index) => (
+              <option key={ns} value={ns}>
+                {ns}
+              </option>
+          ))}
+        </select>
         <footer className="m-auto p-4">
             Powered by LangChainAI. Demo built by Mayo. Project built by Walter(wangyingce).
         </footer>
       </Layout>
     </>
   );
+}
+
+// 使用 getServerSideProps 在服务器端获取数据
+export async function getServerSideProps() {
+  const namespaces = await queryNamespace();
+  // console.log(namespaces);  // log the value of namespaces
+  return { props: { namespaces } };
 }
