@@ -1,10 +1,14 @@
 # Chat to Data
-**基于GPT-4 & LangChain - Create a ChatGPT Chatbot for Your PDF Files进行扩展和调整，主要差一点在于：**
-1. 建docs目录（无需每次都要新建）
-2. 自动加载对话文档，不再需要制定namespace，并且在对话上可以切换主题，让非编码者可以基本使用（namespace和文档名称做了逻辑映射）
-3. 可以单次往向量数据库写入多个文档，可以简便进行大规模训练（原谅我使用训练这个词，找不到其他更好的形象词了）
-- ps：以上所做的都是为了使东西具备最基础的使用能力（而非技术拓展，至于为什么没有去pull，觉得自己现学现卖nodejs实在不合适）
+**Chat2Data是在"gpt4-pdf-chatbot-langchain"项目的基础上进行了扩展和修改。主要的差别和改进如下所述：**
+1. 引入了"docs"目录：您无需每次都手动创建目录。项目将自动从该目录加载对话文档。
+2. 自动加载对话文档：您无需为每个对话指定命名空间。现在您可以在不同的对话主题之间进行切换，使非开发人员更容易使用聊天机器人。命名空间和文档名称进行了逻辑映射，以提供更好的组织和管理。
+3. 能够一次性构建多个文档（命名空间）：当处理大量文档时，这个功能非常实用。您无需逐个训练文档，现在可以同时在向量数据库中训练多个文档。
+- ps：上述变更旨在为项目提供基本功能，以便非技术用户能够使用，至于为什么没有去pushrequest，觉得自己和gpt4现学现卖nodejs实在不合适）
+
 原版readme如下：
+
+---
+
 # GPT-4 & LangChain - Create a ChatGPT Chatbot for Your PDF Files
 
 Use the new GPT-4 api to build a chatGPT chatbot for multiple Large PDF files.
