@@ -164,10 +164,9 @@ export default function Home({fileContent= []}) {
           <h1 className="text-2xl font-bold leading-[1.1] tracking-tighter text-center">
           God in his heaven. All‘s right with the world.
           </h1>
-          <div className={styles.select}>
-          {/* *The current topic of the chat is: */}
-          *当前讨论的主题是:
-          <select onChange={handleSelectChange} required>
+          <div className={styles.selecttext}>
+          当前讨论的主题是:
+          <select  className={styles.selectoption} onChange={handleSelectChange} required  disabled={selectValue !== ''}>
           <option value="">请选择一个主题</option>
             {items.map((item, index) => (
               <option key={index} value={item}>
