@@ -27,6 +27,7 @@ export async function getServerSideProps() {
 export default function Home({fileContent= []}) {
   const [items, setItems] = useState<string[]>(fileContent);
   const [selectValue, setSelectValue] = useState<string>('');
+  const [modelSelectValue, setModelSelectValue] = useState<string>('');
 
   const [query, setQuery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -157,6 +158,24 @@ export default function Home({fileContent= []}) {
     // alert('修改成功');
   }
 
+  const modelSelectChange = async (event:React.ChangeEvent<HTMLSelectElement>) => {
+    const modelSelectedValue = event.target.value;
+    // 调用你的函数，并将所选的值作为参数传递
+    console.log('modelSelectedValue:'+modelSelectedValue);
+    setModelSelectValue(modelSelectedValue);
+    const response = await fetch('/api/updatemds', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ modelSelectedValue }),
+    });
+  
+    const data = await response.json();
+    console.log(data.message);  // 打印服务器端返回的消息
+    // alert('修改成功');
+  }
+
   return (
     <>
       <Layout>
@@ -165,7 +184,7 @@ export default function Home({fileContent= []}) {
           God in his heaven. All‘s right with the world.
           </h1>
           <div className={styles.selecttext}>
-          当前讨论的主题是:
+          选择主题:
           <select  className={styles.selectoption} onChange={handleSelectChange} required  disabled={selectValue !== ''}>
           <option value="">请选择一个主题</option>
             {items.map((item, index) => (
@@ -175,6 +194,16 @@ export default function Home({fileContent= []}) {
             ))}
           </select>
           </div>
+          {true && (
+             <div className={styles.selecttext}>
+             选择模式:
+             <select  className={styles.selectoption} onChange={modelSelectChange} required  disabled={modelSelectValue !== ''}>
+                 <option value="标准">标准</option>
+                 <option value="扩展">扩展</option>
+                 <option value="创意">创意</option>
+             </select>
+             </div>
+          )}  
           <main className={styles.main}>
             <div className={styles.cloud}>
               <div ref={messageListRef} className={styles.messagelist}>
