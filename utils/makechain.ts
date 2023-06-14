@@ -65,7 +65,5 @@ export const makeChain = (vectorstore: PineconeStore) => {
       returnSourceDocuments: false, //The number of source documents returned is 4 by default
     },
   );
-  // console.log('embedDocuments', vectorstore.embeddings.embedDocuments);
-  // console.log('combineDocumentsChain', chain.combineDocumentsChain);
   return chain;
 };

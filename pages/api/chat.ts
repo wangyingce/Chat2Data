@@ -5,11 +5,15 @@ import { makeChain } from '@/utils/makechain';
 import { pinecone } from '@/utils/pinecone-client';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 
+const icMap = new Map();
+icMap.set('wangyingce', true);
+icMap.set('liukaixing', true);
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { question, history } = req.body;
+  const { question, history, ic } = req.body;
 
   console.log('question', question);
   // process.env.PINECONE_NAME_SPACE = '';
@@ -18,6 +22,15 @@ export default async function handler(
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
+
+  //校验ic start*******
+  console.log('ic', ic);
+  if (!ic) {
+    return res.status(400).json({text: 'No IC in the request'});
+  }else if(!(icMap.get(ic))){
+    return res.status(400).json({text: 'IC check failed'});
+  }
+  //校验ic end**********
 
   if (!question) {
     return res.status(400).json({ message: 'No question in the request' });

@@ -16,7 +16,7 @@ export class Flwts {
   }
   static async readFileContent() {
     try {
-      const content = await fs.readFile('nmspclst.txt', 'utf8');
+      const content = await fs.readFile('/Users/wangyingce/Documents/GitHub/nspxs.txt', 'utf8');
       const fileContent = content.split('.pdf,').filter(item => item.trim() !== '');
       return fileContent;
     } catch (error) {

@@ -15,15 +15,15 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-export async function getServerSideProps() {
-  const fileContent = await Flwts.readFileContent();
-  // fileContent 会作为属性传递给 Home 组件
-  return {
-    props: {
-      fileContent,
-    },
-  };
-}
+
+
+// export async function getServerSideProps(context:String) {
+//
+//   console.log(context);
+//   const fileContent = await Flwts.readFileContent();
+//   // fileContent 会作为属性传递给 Home 组件
+//   return {props: {fileContent,},};
+// }
 export default function Home({fileContent= []}) {
   const [items, setItems] = useState<string[]>(fileContent);
   const [selectValue, setSelectValue] = useState<string>('');
@@ -53,6 +53,27 @@ export default function Home({fileContent= []}) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
+    const fetchOptions = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ic = urlParams.get('ic');
+      try {
+        // const response = await fetch('/api/getNameSpace?ic='+ic); // 替换为实际的后台查询接口地址
+        const response = await fetch('/api/getNameSpace', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ic }),
+        });
+        const data = await response.json();
+        const optionValues = data.optionValues; // 假设后台返回的数据格式为 { optionValues: [...] }
+        setItems(optionValues);
+      } catch (error) {
+        alert('缺少ic或者ic错误，无法加载主题列表');
+        console.log('An error occurred while fetching options.', error);
+      }
+    };
+    fetchOptions();
     textAreaRef.current?.focus();
   }, []);
 
@@ -87,7 +108,8 @@ export default function Home({fileContent= []}) {
 
     setLoading(true);
     setQuery('');
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const ic = urlParams.get('ic');
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -97,6 +119,7 @@ export default function Home({fileContent= []}) {
         body: JSON.stringify({
           question,
           history,
+          ic,
         }),
       });
       const data = await response.json();
@@ -152,13 +175,16 @@ export default function Home({fileContent= []}) {
       },
       body: JSON.stringify({ selectedValue }),
     });
-  
+
     const data = await response.json();
     console.log(data.message);  // 打印服务器端返回的消息
     // alert('修改成功');
   }
 
   const modelSelectChange = async (event:React.ChangeEvent<HTMLSelectElement>) => {
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const ic = urlParams.get('ic');
+    // alert("ic:"+ic);
     const modelSelectedValue = event.target.value;
     // 调用你的函数，并将所选的值作为参数传递
     console.log('modelSelectedValue:'+modelSelectedValue);
@@ -170,7 +196,7 @@ export default function Home({fileContent= []}) {
       },
       body: JSON.stringify({ modelSelectedValue }),
     });
-  
+
     const data = await response.json();
     console.log(data.message);  // 打印服务器端返回的消息
     // alert('修改成功');
@@ -203,7 +229,7 @@ export default function Home({fileContent= []}) {
                  <option value="创意">创意</option>
              </select>
              </div>
-          )}  
+          )}
           <main className={styles.main}>
             <div className={styles.cloud}>
               <div ref={messageListRef} className={styles.messagelist}>
