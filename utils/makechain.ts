@@ -15,7 +15,7 @@ let QA_PROMPT ='';
 
 //标准：角色+围绕文档主题，只回答和文档中或和文档有关联的的问题
 if(process.env.CHAT_PROMPT_POSTURE==='标准'){
-QA_PROMPT = `As an AI assistant. combine `+PINECONE_NAME_SPACE+` and use the following context to answer the final question.
+QA_PROMPT = `As an AI assistant. Use the following context to answer the final question.
 If you don't know the answer, say you don't know. Do not try to make up an answer.
 If the question is not relevant to the context, answer politely and you are tuned to answer only questions that are relevant to the context.
 
@@ -27,7 +27,7 @@ Helpful answer in markdown with Chinese:`;
 
 //扩展：角色+围绕文档主题，但不允许创造
 }else if(process.env.CHAT_PROMPT_POSTURE==='扩展'){
-QA_PROMPT = `As an AI assistant. combine `+PINECONE_NAME_SPACE+` and use the following context to answer the final question.
+QA_PROMPT = `As an AI assistant. Use the following context to answer the final question.
 If you don't know the answer, say you don't know. Do not try to make up an answer.
 
 {context}
