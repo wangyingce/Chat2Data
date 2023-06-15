@@ -40,7 +40,7 @@ export default function Home({fileContent= []}) {
   }>({
     messages: [
       {
-        message: '嘿，选一个主题让我们开始讨论吧?',
+        message: '选一个主题让我们开始讨论吧?',
         type: 'apiMessage',
       },
     ],

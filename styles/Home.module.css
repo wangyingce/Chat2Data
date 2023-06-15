@@ -6,7 +6,8 @@
   padding: 1rem;
 }
 .star {
-  color: red;
+  color: steelblue;
+  font-weight: bold;
 }
 .selecttext{
   text-align-last:center;
@@ -18,7 +19,8 @@
   text-align-last:center;
   text-align:center;
   -moz-text-align-last:center;
-  color: red;
+  color:  steelblue;
+  font-weight: bold;
 }
 .header {
   width: auto;
