@@ -206,9 +206,9 @@ export default function Home({fileContent= []}) {
     <>
       <Layout>
         <div className="mx-auto flex flex-col gap-4">
-          <h1 className="text-2xl font-bold leading-[1.1] tracking-tighter text-center">
-          God in his heaven. All‘s right with the world.
-          </h1>
+          {/* <h1 className="text-2xl font-bold leading-[1.1] tracking-tighter text-center">
+          God's in his heaven. All's right with the world.
+          </h1> */}
           <div className={styles.selecttext}>
           选择主题:
           <select  className={styles.selectoption} onChange={handleSelectChange} required  disabled={selectValue !== ''}>
@@ -220,7 +220,7 @@ export default function Home({fileContent= []}) {
             ))}
           </select>
           </div>
-          {true && (
+          {false && (
              <div className={styles.selecttext}>
              选择模式:
              <select  className={styles.selectoption} onChange={modelSelectChange} required  disabled={modelSelectValue !== ''}>
@@ -334,7 +334,8 @@ export default function Home({fileContent= []}) {
           </main>
         </div>
         <footer className="m-auto p-4">
-            Powered by LangChainAI. Demo built by Mayo. Project built by Walter(wangyingce).
+            God's in his heaven. All's right with the world.
+            Powered by LangChainAI. Demo built by Mayo. Project built by wangyc.
         </footer>
       </Layout>
     </>
