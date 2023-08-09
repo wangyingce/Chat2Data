@@ -46,7 +46,7 @@ Question: {question}
 
 Helpful answer in markdown with Chinese:`;
 }
-
+console.log('process.env.CHAT_PROMPT_POSTURE:',process.env.CHAT_PROMPT_POSTURE);
 console.log('CONDENSE_PROMPT:',CONDENSE_PROMPT); 
 console.log('QA_PROMPT:',QA_PROMPT);
 

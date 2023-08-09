@@ -13,9 +13,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { question, history, ic } = req.body;
+  const { question, history, ic, selectedValue} = req.body;
 
   console.log('question', question);
+  console.log('selectedValue', selectedValue);
+  const encodedSelectedValue = encodeURIComponent(selectedValue);
+  console.log('encodedSelectedValue', encodedSelectedValue);
+
   // process.env.PINECONE_NAME_SPACE = '';
   //only accept post requests
   if (req.method !== 'POST') {
@@ -24,16 +28,19 @@ export default async function handler(
   }
 
   //校验ic start*******
-  console.log('ic', ic);
-  if (!ic) {
-    return res.status(400).json({text: 'No IC in the request'});
-  }else if(!(icMap.get(ic))){
-    return res.status(400).json({text: 'IC check failed'});
-  }
+  // console.log('ic', ic);
+  // if (!ic) {
+  //   return res.status(400).json({text: 'No IC in the request'});
+  // }else if(!(icMap.get(ic))){
+  //   return res.status(400).json({text: 'IC check failed'});
+  // }
   //校验ic end**********
 
   if (!question) {
     return res.status(400).json({ message: 'No question in the request' });
+  }
+  if (!encodedSelectedValue) {
+    return res.status(400).json({ message: 'No theme in the request' });
   }
   // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
@@ -47,7 +54,7 @@ export default async function handler(
       {
         pineconeIndex: index,
         textKey: 'text',
-        namespace: process.env.PINECONE_NAME_SPACE, //namespace comes from your config folder
+        namespace: encodedSelectedValue, //namespace comes from your config folder
       },
     );
 

@@ -65,8 +65,8 @@ export default function Home({fileContent= []}) {
           },
           body: JSON.stringify({ ic }),
         });
-        const data = await response.json();
-        const optionValues = data.optionValues; // 假设后台返回的数据格式为 { optionValues: [...] }
+        const res = await response.json();
+        const optionValues = res.data; // 假设后台返回的数据格式为 { optionValues: [...] }
         setItems(optionValues);
       } catch (error) {
         alert('缺少ic或者ic错误，无法加载主题列表');
@@ -120,6 +120,7 @@ export default function Home({fileContent= []}) {
           question,
           history,
           ic,
+          selectedValue: selectValue, // 将selectValue作为参数传递
         }),
       });
       const data = await response.json();
@@ -168,7 +169,7 @@ export default function Home({fileContent= []}) {
     // 调用你的函数，并将所选的值作为参数传递
     console.log('selectedValue:'+selectedValue);
     setSelectValue(selectedValue);
-    const response = await fetch('/api/updatens', {
+    const response = await fetch('/api/updatenv', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
